@@ -14,7 +14,29 @@
 import UIKit
 
 class ChecklistViewController: UITableViewController {
+    
+    // MARK: - Variables
+    var items: [ChecklistItem]
 
+
+    // MARK: - Initializers
+    
+    required init?(coder aDecoder: NSCoder) {
+        items = [ChecklistItem]()
+        
+        let item0 = ChecklistItem()
+        item0.description = "Walk the dog"
+        item0.checked = false
+        
+        let item1 = ChecklistItem()
+        item1.description = "Brush my teeth"
+        item1.checked = true
+        
+        items.append(item0)
+        items.append(item1)
+        
+        super.init(coder: aDecoder)
+    }
     
     // MARK: - View Controller lifecycle
     
@@ -32,7 +54,7 @@ class ChecklistViewController: UITableViewController {
     // Return the number of rows in section
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return 19
+        return items.count
     }
     
     // how to display each row of the table
@@ -41,14 +63,11 @@ class ChecklistViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "checklistItem", for: indexPath)
         
         let label = cell.viewWithTag(1000) as! UILabel
+        let item = items[indexPath.row]
         
-        if indexPath.row == 0 {
-            label.text = "Walk the dog"
-        } else if indexPath.row == 1 {
-            label.text = "Bruh my teeth"
-        } else if indexPath.row == 4 {
-            label.text = "Eat ice cream"
-        }
+        // Configure the cell's properties
+        label.text = item.description
+        configureCheckStatusFor(cell, indexPath: indexPath)
         
         return cell
     }
@@ -61,14 +80,26 @@ class ChecklistViewController: UITableViewController {
         
         // toggle the checkmark
         if let cell = tableView.cellForRow(at: indexPath) {
-            if cell.accessoryType == .none {
-                cell.accessoryType = .checkmark
-            } else { // check for checkmar??
-                cell.accessoryType = .none
-            }
+            let item = items[indexPath.row]
+            item.checked = !item.checked
+            configureCheckStatusFor(cell, indexPath: indexPath)
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    
+    // MARK: - Helper methods
+    
+    // Configures the state of the cell's checkmark
+    private func configureCheckStatusFor(_ cell: UITableViewCell, indexPath: IndexPath) {
+        let item = items[indexPath.row]
+        
+        if item.checked {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
+        }
     }
 }
 
