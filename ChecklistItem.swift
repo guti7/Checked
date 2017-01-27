@@ -16,4 +16,11 @@ class ChecklistItem {
     
     var description = ""
     var checked = false
+    
+    
+    // MARK: - Methods
+    
+    func toggleCheck() {
+        checked = !checked
+    }
 }
