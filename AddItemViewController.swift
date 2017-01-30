@@ -9,7 +9,13 @@
 //import Foundation
 import UIKit
 
-class AddItemViewController: UITableViewController {
+class AddItemViewController: UITableViewController, UITextFieldDelegate {
+    
+    
+    // MARK: - Outlets
+    
+    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var doneBarButton: UIBarButtonItem!
     
     
     // MARK: - Actions
@@ -19,7 +25,17 @@ class AddItemViewController: UITableViewController {
     }
     
     @IBAction func done() {
+        // debug
+        print("text field contents: \(textField.text!)")
         dismiss(animated: true, completion: nil)
+    }
+    
+    
+    // MARK: View life cycle
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        textField.becomeFirstResponder()
     }
     
     
@@ -29,4 +45,18 @@ class AddItemViewController: UITableViewController {
         return nil
     }
     
+    
+    // MARK: - Text Field Delegate
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        // the range is the location where the replacement string is to be
+        // added to the original string value
+        let oldText = textField.text! as NSString
+        let newText = oldText.replacingCharacters(in: range, with: string) as NSString
+        
+        doneBarButton.isEnabled = (newText.length > 0) // :String - characters.count
+        
+        return true
+    }
 }
