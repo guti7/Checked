@@ -48,6 +48,21 @@ class ChecklistViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
     
+    // MARK: - Actions
+    @IBAction func addItem() {
+        let newRowIndex = items.count
+        
+        let item = ChecklistItem()
+        item.description = "I am a new row"
+        item.checked = false
+        items.append(item)
+        
+        let indexPath = IndexPath(row: newRowIndex, section: 0)
+        let indexPaths = [indexPath]
+        
+        tableView.insertRows(at: indexPaths, with: .automatic)
+    }
+    
 
     // MARK: - Data Source
     
