@@ -48,6 +48,7 @@ class ChecklistViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
     
+    
     // MARK: - Actions
     @IBAction func addItem() {
         let newRowIndex = items.count
@@ -84,6 +85,13 @@ class ChecklistViewController: UITableViewController {
         configureCheckStatusFor(cell, withChecklistItem: item)
         
         return cell
+    }
+    
+    // Delete rows with "swipe-to-delete"
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        items.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
     }
     
     
