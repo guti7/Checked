@@ -12,6 +12,10 @@ import UIKit
 class AddItemViewController: UITableViewController, UITextFieldDelegate {
     
     
+    // MARK: - Variables
+    weak var delegate: AddItemViewControllerDelegate?
+    
+    
     // MARK: - Outlets
     
     @IBOutlet weak var textField: UITextField!
@@ -21,13 +25,15 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
     // MARK: - Actions
     
     @IBAction func cancel() {
-        dismiss(animated: true, completion: nil)
+        delegate?.addItemViewControllerDidCancel(controller: self)
     }
     
     @IBAction func done() {
-        // debug
-        print("text field contents: \(textField.text!)")
-        dismiss(animated: true, completion: nil)
+
+        let item = ChecklistItem()
+        item.description = textField.text!
+        item.checked = false
+        delegate?.addItemViewController(controller: self, didFinishAdding: item)
     }
     
     
@@ -59,4 +65,11 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
         
         return true
     }
+}
+
+
+// MARK: - Protocols
+protocol AddItemViewControllerDelegate: class {
+    func addItemViewControllerDidCancel(controller: AddItemViewController)
+    func addItemViewController(controller: AddItemViewController, didFinishAdding item: ChecklistItem)
 }

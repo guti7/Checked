@@ -8,7 +8,7 @@
 
 
 /*
- * Let's you organize to-do items into tlists and then check of these items once
+ * Lets you organize to-do items into lists and then check off these items once
  * you're done with them
  */
 import UIKit
@@ -63,7 +63,7 @@ class ChecklistViewController: UITableViewController {
 //        
 //        tableView.insertRows(at: indexPaths, with: .automatic)
 //    }
-    
+//    
 
     // MARK: - Data Source
     
@@ -126,6 +126,40 @@ class ChecklistViewController: UITableViewController {
     private func configureTextForCell(_ cell: UITableViewCell, withChecklistItem item: ChecklistItem) {
         let label = cell.viewWithTag(1000) as! UILabel
         label.text = item.description
+    }
+    
+    
+    // MARK - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "AddItem" {
+            // navigation controller in between destinations
+            let navigationController = segue.destination as! UINavigationController
+            let controller = navigationController.topViewController as! AddItemViewController
+            controller.delegate = self
+        }
+    }
+}
+
+
+// MARK: - Extensions
+
+// Add Item Delegate
+extension ChecklistViewController: AddItemViewControllerDelegate {
+    func addItemViewControllerDidCancel(controller: AddItemViewController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func addItemViewController(controller: AddItemViewController, didFinishAdding item: ChecklistItem) {
+        let newRowIndex = items.count
+        
+        items.append(item)
+        let indexPath = IndexPath(row: newRowIndex, section: 0)
+        let indexPaths = [indexPath]
+        
+        tableView.insertRows(at: indexPaths, with: .automatic)
+        
+        dismiss(animated: true, completion: nil)
     }
 }
 
