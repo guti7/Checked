@@ -17,6 +17,8 @@ class ChecklistViewController: UITableViewController {
     
     // MARK: - Variables
     var items: [ChecklistItem]
+    let checklistItemTag = 1000
+    let checkmarkTag = 1001
 
 
     // MARK: - Initializers
@@ -115,16 +117,17 @@ class ChecklistViewController: UITableViewController {
     
     // Configures the state of the cell's checkmark
     private func configureCheckStatusFor(_ cell: UITableViewCell, withChecklistItem item: ChecklistItem) {
-        
+        let checkLabel = cell.viewWithTag(checkmarkTag) as! UILabel
         if item.checked {
-            cell.accessoryType = .checkmark
+            checkLabel.text = "✅"
         } else {
-            cell.accessoryType = .none
+            // TODO: align checklist item labels when checkmark is not shown
+            checkLabel.text = " "
         }
     }
     
     private func configureTextForCell(_ cell: UITableViewCell, withChecklistItem item: ChecklistItem) {
-        let label = cell.viewWithTag(1000) as! UILabel
+        let label = cell.viewWithTag(checklistItemTag) as! UILabel
         label.text = item.description
     }
     
