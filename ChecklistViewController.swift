@@ -17,8 +17,11 @@ class ChecklistViewController: UITableViewController {
     
     // MARK: - Variables
     var items: [ChecklistItem]
+    
     let checklistItemTag = 1000
     let checkmarkTag = 1001
+    let addItemIdentifier = "AddItem"
+    let editItemIdentifier = "EditItem"
 
 
     // MARK: - Initializers
@@ -135,11 +138,21 @@ class ChecklistViewController: UITableViewController {
     // MARK - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "AddItem" {
+        if segue.identifier == addItemIdentifier {
             // navigation controller in between destinations
             let navigationController = segue.destination as! UINavigationController
             let controller = navigationController.topViewController as! AddItemViewController
             controller.delegate = self
+        }
+        else if segue.identifier == editItemIdentifier {
+            // TODO: - Refactor
+            let navigationController = segue.destination as! UINavigationController
+            let controller = navigationController.topViewController as! AddItemViewController
+            controller.delegate = self
+            // clarify sender type
+            if let indexPath = tableView.indexPath(for: sender as! UITableViewCell) {
+                controller.itemToEdit = items[indexPath.row]
+            }
         }
     }
 }

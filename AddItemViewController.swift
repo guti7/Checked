@@ -14,6 +14,7 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
     
     // MARK: - Variables
     weak var delegate: AddItemViewControllerDelegate?
+    var itemToEdit: ChecklistItem?
     
     
     // MARK: - Outlets
@@ -29,7 +30,6 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @IBAction func done() {
-
         let item = ChecklistItem()
         item.description = textField.text!
         item.checked = false
@@ -38,6 +38,15 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
     
     
     // MARK: View life cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if let item = itemToEdit {
+            title = "Edit Item"
+            textField.text = item.description
+        }
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
