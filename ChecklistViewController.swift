@@ -141,13 +141,13 @@ class ChecklistViewController: UITableViewController {
         if segue.identifier == addItemIdentifier {
             // navigation controller in between destinations
             let navigationController = segue.destination as! UINavigationController
-            let controller = navigationController.topViewController as! AddItemViewController
+            let controller = navigationController.topViewController as! ItemDetailViewController
             controller.delegate = self
         }
         else if segue.identifier == editItemIdentifier {
             // TODO: - Refactor
             let navigationController = segue.destination as! UINavigationController
-            let controller = navigationController.topViewController as! AddItemViewController
+            let controller = navigationController.topViewController as! ItemDetailViewController
             controller.delegate = self
             // clarify sender type
             if let indexPath = tableView.indexPath(for: sender as! UITableViewCell) {
@@ -161,12 +161,12 @@ class ChecklistViewController: UITableViewController {
 // MARK: - Extensions
 
 // Add Item Delegate
-extension ChecklistViewController: AddItemViewControllerDelegate {
-    func addItemViewControllerDidCancel(controller: AddItemViewController) {
+extension ChecklistViewController: ItemDetailViewControllerDelegate {
+    func itemDetailViewControllerDidCancel(controller: ItemDetailViewController) {
         dismiss(animated: true, completion: nil)
     }
     
-    func addItemViewController(controller: AddItemViewController, didFinishAdding item: ChecklistItem) {
+    func itemDetailViewController(controller: ItemDetailViewController, didFinishAdding item: ChecklistItem) {
         let newRowIndex = items.count
         
         items.append(item)
@@ -178,7 +178,7 @@ extension ChecklistViewController: AddItemViewControllerDelegate {
         dismiss(animated: true, completion: nil)
     }
     
-    func addItemViewcontroller(controller: AddItemViewController, didFinishEditing item: ChecklistItem) {
+    func itemDetailViewController(controller: ItemDetailViewController, didFinishEditing item: ChecklistItem) {
         if let index = items.index(of: item) { // find the item in array
             items[index] = item
             
