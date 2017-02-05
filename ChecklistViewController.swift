@@ -30,11 +30,11 @@ class ChecklistViewController: UITableViewController {
         items = [ChecklistItem]()
         
         let item0 = ChecklistItem()
-        item0.description = "Walk the dog"
+        item0.text = "Walk the dog"
         item0.checked = false
         
         let item1 = ChecklistItem()
-        item1.description = "Brush my teeth"
+        item1.text = "Brush my teeth"
         item1.checked = true
         
         items.append(item0)
@@ -129,9 +129,9 @@ class ChecklistViewController: UITableViewController {
         }
     }
     
-    private func configureTextForCell(_ cell: UITableViewCell, withChecklistItem item: ChecklistItem) {
+    fileprivate func configureTextForCell(_ cell: UITableViewCell, withChecklistItem item: ChecklistItem) {
         let label = cell.viewWithTag(checklistItemTag) as! UILabel
-        label.text = item.description
+        label.text = item.text
     }
     
     
@@ -176,6 +176,22 @@ extension ChecklistViewController: AddItemViewControllerDelegate {
         tableView.insertRows(at: indexPaths, with: .automatic)
         
         dismiss(animated: true, completion: nil)
+    }
+    
+    func addItemViewcontroller(controller: AddItemViewController, didFinishEditing item: ChecklistItem) {
+        if let index = items.index(of: item) { // find the item in array
+            items[index] = item
+            
+            // reload data
+            //tableView.reloadData()
+            
+            let indexPath = IndexPath(row: index, section: 0)
+            if let cell = tableView.cellForRow(at: indexPath) {
+                configureTextForCell(cell, withChecklistItem: item)
+            }
+        }
+        dismiss(animated: true, completion: nil)
+        
     }
 }
 

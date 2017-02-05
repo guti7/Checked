@@ -14,6 +14,7 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
     
     // MARK: - Variables
     weak var delegate: AddItemViewControllerDelegate?
+    // Variable to check if the item is to be edited
     var itemToEdit: ChecklistItem?
     
     
@@ -30,10 +31,15 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
     }
     
     @IBAction func done() {
-        let item = ChecklistItem()
-        item.description = textField.text!
-        item.checked = false
-        delegate?.addItemViewController(controller: self, didFinishAdding: item)
+        if let item = itemToEdit {
+            item.text = textField.text!
+            delegate?.addItemViewcontroller(controller: self, didFinishEditing: item)
+        } else {
+            let item = ChecklistItem()
+            item.text = textField.text!
+            item.checked = false
+            delegate?.addItemViewController(controller: self, didFinishAdding: item)
+        }
     }
     
     
@@ -44,7 +50,8 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
         
         if let item = itemToEdit {
             title = "Edit Item"
-            textField.text = item.description
+            textField.text = item.text
+            doneBarButton.isEnabled = true
         }
     }
     
@@ -81,4 +88,5 @@ class AddItemViewController: UITableViewController, UITextFieldDelegate {
 protocol AddItemViewControllerDelegate: class {
     func addItemViewControllerDidCancel(controller: AddItemViewController)
     func addItemViewController(controller: AddItemViewController, didFinishAdding item: ChecklistItem)
+    func addItemViewcontroller(controller: AddItemViewController, didFinishEditing item: ChecklistItem)
 }

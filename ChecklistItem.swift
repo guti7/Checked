@@ -9,12 +9,12 @@
 import Foundation
 
 // Make a new to do item
-class ChecklistItem {
+class ChecklistItem: NSObject { // Equatable
     
     
     // MARK: - Variables
     
-    var description = ""
+    var text = ""
     var checked = false
     
     
@@ -23,4 +23,10 @@ class ChecklistItem {
     func toggleCheck() {
         checked = !checked
     }
+    
+//    // MARK: - Equatable
+//    
+//    static func == (left: ChecklistItem, right: ChecklistItem) -> Bool {
+//        return left.description == right.description
+//    }
 }
